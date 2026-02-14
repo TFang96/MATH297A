@@ -11,10 +11,10 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
   
   # choose K centers
   centerIndxs = sample.int(nrow(X), K) # the indexes of our chosen centers
-  centerObs = X[centerIndxs, drop = FALSE] # the actual observations chosen as centers
+  centerObs = X[centerIndxs, , drop = FALSE] # the actual observations chosen as centers
   
   observation_labels <- integer(nrow(X)) # this is the vector of labels
-  E <- Inf # this is the WSS, we start with infinity
+  E_old <- Inf # this is the WSS, we start with infinity
   
   # loop through the iterations
   for (i in 1:maxItr) {
@@ -60,4 +60,5 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     E_old <- E_new # store the WSS from this round as the old WSS. 
     E_new <- 0 # reset the new WSS for the next iteration
   }
+  return(list(observation_labels, centerObs))
 }

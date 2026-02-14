@@ -58,7 +58,6 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
       break
     
     E_old <- E_new # store the WSS from this round as the old WSS. 
-    E_new <- 0 # reset the new WSS for the next iteration
   }
   return(list(observation_labels, centerObs))
 }

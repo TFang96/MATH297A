@@ -13,8 +13,8 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
   centerIndxs = sample.int(nrow(X), K) # the indexes of our chosen centers
   centerObs = X[centerIndxs, drop = FALSE] # the actual observations chosen as centers
   
-  observation_labels <- integer(n) # this is the vector of labels
-  E <- inf # this is the WSS, we start with infinity
+  observation_labels <- integer(nrow(X)) # this is the vector of labels
+  E <- Inf # this is the WSS, we start with infinity
   
   # loop through the iterations
   for (i in 1:maxItr) {
@@ -30,7 +30,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     newLabels <- apply(distances, 1, which.min)
     
     #update the cluster centroids
-    newCenters <- matrix(NA, nrow = K, ncol = p)
+    newCenters <- matrix(NA, nrow = K, ncol = ncol(X))
     # for every cluster
     for (k in 1:K) {
       members <- which(newLabels == k)
@@ -45,7 +45,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
       E_new <- E_new + sum(rowSums((X[members, , drop = FALSE] - newCenters[k, ])^2))
     }
     
-    if(is.infinite((E_ol)))
+    if(is.infinite((E_old))) # if this is the first iteration
       improvement <- Inf
     else
       improvement <- E_old - E_new
@@ -57,6 +57,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     if(improvement != Inf && improvement < improv_threshold)
       break
     
+    E_old <- E_new # store the WSS from this round as the old WSS. 
     E_new <- 0 # reset the new WSS for the next iteration
   }
 }

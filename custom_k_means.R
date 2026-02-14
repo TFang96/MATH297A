@@ -6,6 +6,8 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
   # check for valid input and clusters
   if(K > nrow(X))
     stop("We cannot have more clusters than actual points")
+  if(K <= 0)
+    stop("We cannot have negative clusters")
   
   # choose K centers
   centerIndxs = sample.int(nrow(X), K)

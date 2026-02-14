@@ -10,11 +10,11 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     stop("We cannot have negative clusters")
   
   # choose K centers
-  centerIndxs = sample.int(nrow(X), K)
-  centerObs = X[centerIndxs, drop = FALSE]
+  centerIndxs = sample.int(nrow(X), K) # the indexes of our chosen centers
+  centerObs = X[centerIndxs, drop = FALSE] # the actual observations chosen as centers
   
   observation_labels <- integer(n) # this is the vector of labels
-  E <- inf # this is the WSS
+  E <- inf # this is the WSS, we start with infinity
   
   # loop through the iterations
   for (i in 1:maxItr) {
@@ -56,5 +56,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     # is the improvement at our threshold
     if(improvement != Inf && improvement < improv_threshold)
       break
+    
+    E_new <- 0 # reset the new WSS for the next iteration
   }
 }

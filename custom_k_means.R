@@ -48,7 +48,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     if(is.infinite((E_old))) # if this is the first iteration
       improvement <- Inf
     else
-      improvement <- E_old - E_new
+      improvement <- E_new - E_old
     
     centerObs <- newCenters
     observation_labels <- newLabels

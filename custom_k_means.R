@@ -15,6 +15,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
   
   observation_labels <- integer(nrow(X)) # this is the vector of labels
   E_old <- Inf # this is the WSS, we start with infinity
+  errors <- c()
   
   # loop through the iterations
   for (i in 1:maxItr) {
@@ -48,7 +49,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     if(is.infinite((E_old))) # if this is the first iteration
       improvement <- Inf
     else
-      improvement <- E_new - E_old
+      improvement <- E_old - E_new
     
     centerObs <- newCenters
     observation_labels <- newLabels
@@ -58,6 +59,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
       break
     
     E_old <- E_new # store the WSS from this round as the old WSS. 
+    errors <- append(errors, c(E_old)) # store errors in a vector
   }
-  return(list(observation_labels, centerObs))
+  return(list(observation_labels, centerObs, errors))
 }

@@ -50,8 +50,8 @@ custom_fuzzy_kmeans <- function(X, K, v = 2, improv_threshold = 1e-6, maxItr = 1
         U_new[i, ] <- 0
         U_new[i, k0] <- 1
       } else {
-        # Using squared distances, the exponent is 1/(m-1)
-        # u_ik = 1 / sum_j ( (d_ik / d_ij)^(1/(m-1)) )
+        # Using squared distances, the exponent is 1/(v-1)
+        # u_ik = 1 / sum_j ( (d_ik / d_ij)^(1/(v-1)) )
         for (k in 1:K) {
           U_new[i, k] <- 1 / sum((d_i[k] / d_i)^(1 / (v - 1)))
         }
@@ -71,11 +71,12 @@ custom_fuzzy_kmeans <- function(X, K, v = 2, improv_threshold = 1e-6, maxItr = 1
     U <- U_new
     centers <- newCenters
     
-    if (improvement != Inf && improvement < improv_threshold)
-      break
     
     E_old <- E_new
     errors <- append(errors, E_old)
+    
+    if (improvement != Inf && improvement < improv_threshold)
+      break
   }
   
   return(list(

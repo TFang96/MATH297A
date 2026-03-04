@@ -54,12 +54,12 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     centerObs <- newCenters
     observation_labels <- newLabels
     
+    E_old <- E_new # store the WSS from this round as the old WSS. 
+    errors <- append(errors, c(E_old)) # store errors in a vector
+    
     # is the improvement at our threshold
     if(improvement != Inf && improvement < improv_threshold)
       break
-    
-    E_old <- E_new # store the WSS from this round as the old WSS. 
-    errors <- append(errors, c(E_old)) # store errors in a vector
   }
   return(list(observation_labels, centerObs, errors))
 }

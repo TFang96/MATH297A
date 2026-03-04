@@ -53,12 +53,12 @@ custom_fuzzy_kmeans <- function(X, K, v = 2, improv_threshold = 1e-6, maxItr = 1
         # Using squared distances, the exponent is 1/(m-1)
         # u_ik = 1 / sum_j ( (d_ik / d_ij)^(1/(m-1)) )
         for (k in 1:K) {
-          U_new[i, k] <- 1 / sum((d_i[k] / d_i)^(1 / (m - 1)))
+          U_new[i, k] <- 1 / sum((d_i[k] / d_i)^(1 / (v - 1)))
         }
       }
     }
     
-    # --- compute fuzzy objective J_m
+    # --- compute fuzzy objective 
     E_new <- sum((U_new^v) * distances)
     
     # improvement (same sign convention as your code)

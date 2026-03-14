@@ -45,7 +45,9 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     E_new <- 0
     for (k in 1:K) {
       members <- which(newLabels == k)
+      # if the cluster has members
       if (length(members) > 0) {
+        # calculate the WSS per cluster
         E_new <- E_new + sum(
           rowSums((sweep(X[members, , drop = FALSE], 2, newCenters[k, ], FUN = "-"))^2)
         )

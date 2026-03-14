@@ -20,8 +20,10 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
   # loop through the iterations
   for (i in 1:maxItr) {
     # compute and store distances from each observation to our centers
-    distances <- sapply(1:K, function(k)
-      rowSums((X - centerObs[k, , drop = TRUE])^2))
+    # create the n * K distance matrix
+    distances <- sapply(1:K, function(k) {
+      rowSums((sweep(X, 2, centerObs[k, ], FUN = "-"))^2)
+    })
     
     # ensure distances is matrix
     if(is.null(dim(distances)))
@@ -43,7 +45,11 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     E_new <- 0
     for (k in 1:K) {
       members <- which(newLabels == k)
-      E_new <- E_new + sum(rowSums((X[members, , drop = FALSE] - newCenters[k, ])^2))
+      if (length(members) > 0) {
+        E_new <- E_new + sum(
+          rowSums((sweep(X[members, , drop = FALSE], 2, newCenters[k, ], FUN = "-"))^2)
+        )
+      }
     }
     
     if(is.infinite((E_old))) # if this is the first iteration
@@ -58,7 +64,7 @@ custom_kmeans <- function(X, K, improv_threshold, maxItr) {
     errors <- append(errors, c(E_old)) # store errors in a vector
     
     # is the improvement at our threshold
-    if(improvement != Inf && improvement < improv_threshold)
+    if(improvement != Inf && improvement >= 0 && improvement < improv_threshold)
       break
   }
   return(list(observation_labels, centerObs, errors))

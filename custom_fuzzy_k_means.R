@@ -35,7 +35,7 @@ custom_fuzzy_kmeans <- function(X, K, v = 2, improv_threshold = 1e-6, maxItr = 1
     
     # --- compute squared distances D: n x K
     distances <- sapply(1:K, function(k)
-      rowSums((X - newCenters[k, , drop = TRUE])^2))
+      rowSums((X - matrix(newCenters[k, ], nrow = n, ncol = p, byrow = TRUE))^2))
     distances <- as.matrix(distances)
     
     # --- update membership matrix U
@@ -75,7 +75,7 @@ custom_fuzzy_kmeans <- function(X, K, v = 2, improv_threshold = 1e-6, maxItr = 1
     E_old <- E_new
     errors <- append(errors, E_old)
     
-    if (improvement != Inf && improvement < improv_threshold)
+    if (improvement != Inf && improvement >= 0 && improvement < improv_threshold)
       break
   }
   

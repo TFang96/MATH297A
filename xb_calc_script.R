@@ -29,7 +29,7 @@ xb_calc <- function(centers, membership, distances, covariance, m, q, clusterCnt
       nj <- sum(u_matrix[, j])
       nl <- sum(u_matrix[, l])
       
-      Sigma_nl <- (nj * covariance[, ,j] + nl * covariance[, , l]) / (nj + nl)
+      Sigma_jl <- (nj * covariance[, ,j] + nl * covariance[, , l]) / (nj + nl)
       
       diff <- matrix(cl - cj, ncol = 1)
       
